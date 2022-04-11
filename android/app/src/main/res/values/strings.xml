@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">tlak</string>
+    <string name="title_activity_main">tlak</string>
+    <string name="package_name">io.grizzly.tlak</string>
+    <string name="custom_url_scheme">io.grizzly.tlak</string>
+</resources>

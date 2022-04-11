@@ -1,29 +1,66 @@
+
 <template>
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Tab 2</ion-title>
+        <ion-title>Tabuľka tlakov</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Tab 2</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      
-      <ExploreContainer name="Tab 2 page" />
+      <ion-grid v-if="dataTlaky != undefined">
+        <ion-row>
+          <ion-col>
+            Čas
+          </ion-col>
+          <ion-col>
+            SYS/DIA
+          </ion-col>
+          <ion-col>
+            Pulz
+          </ion-col>
+          <ion-col>
+             
+          </ion-col>
+        </ion-row>
+        <ion-row v-for="(tlak, index) in dataTlaky.tlaky" :key="tlak">
+          <ion-col>
+            {{tlak.time}}
+          </ion-col>
+          <ion-col>
+            {{tlak.sys}}/{{tlak.dia}}
+          </ion-col>
+          <ion-col>
+            {{tlak.pulz}}
+          </ion-col>
+          <ion-col>
+            <ion-button @click="deleteItem(index)">🗑️</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-content>
   </ion-page>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import ExploreContainer from '@/components/ExploreContainer.vue';
+<script>
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonCol, IonGrid, IonRow } from '@ionic/vue';
 
-export default defineComponent({
+export default {
   name: 'Tab2Page',
-  components: { ExploreContainer, IonHeader, IonToolbar, IonTitle, IonContent, IonPage }
-});
+  components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonCol, IonGrid, IonRow },
+  data() {
+    return {
+      dataTlaky: undefined
+    }
+  },
+  ionViewWillEnter() {
+    this.dataTlaky = JSON.parse(localStorage.getItem('tlaky'))
+    console.log(this.dataTlaky.tlaky[2])
+  },
+  methods: {
+    deleteItem(index) {
+      this.dataTlaky.tlaky.splice(index,1)
+      localStorage.setItem('tlaky',JSON.stringify(this.dataTlaky))
+    }
+  }
+}
 </script>
