@@ -54,7 +54,6 @@ export default {
   },
   ionViewWillEnter() {
     this.dataTlaky = JSON.parse(localStorage.getItem('tlaky'))
-    console.log(this.dataTlaky.tlaky[2])
   },
   methods: {
     deleteItem(index) {

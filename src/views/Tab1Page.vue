@@ -19,6 +19,7 @@
 
 <script>
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonDatetime, IonButton, IonInput} from '@ionic/vue';
+import 'date-fns-tz';
 
 export default {
   name: 'Tab1Page',
@@ -32,16 +33,29 @@ export default {
       dataTlaky: 0
     }
   },
-  created() {
-    let currentTime = new Date(new Date().toLocaleString('en-US', {timeZone: 'Etc/GMT-4'})) 
-    this.iosTime = currentTime.toISOString()
+  ionViewWillEnter() {
+    // Get the time zone set on the user's device
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+    // Create a date object from a UTC date string
+    const date = new Date();
+
+    // Use date-fns-tz to convert from UTC to a zoned time
+    const zonedTime = dateFnsTz.utcToZonedTime(date, userTimeZone);
+
+    // Create a formatted string from the zoned time
+    format(zonedTime, 'yyyy-MM-dd HH:mm:ssXXX', { timeZone: userTimeZone });
+
+    console.log(zonedTime)
     this.dataTlaky = JSON.parse(localStorage.getItem('tlaky'))
   },
   methods: {
     addTlak() {
-      let time =new Date().toLocaleString('en-US', {timeZone: 'Etc/GMT-4'})
-
+      let time = new Date(this.iosTime)
+      console.log(time)
+      console.log(time.getDate())
+      time = time.getFullYear() + '/' + time.getDate() + '/' + (time.getMonth() + 1) + ' ' + time.getHours() + ':' + time.getMinutes()
+      
       this.dataTlaky.tlaky.push({time: time, sys: this.sys, dia: this.dia, pulz: this.pulz})
 
       localStorage.setItem('tlaky',JSON.stringify(this.dataTlaky))
